@@ -5,12 +5,12 @@ const PLAYER_SPEED: f32 = 500.0;
 const PLAYER_SIZE: f32 = 64.0;
 
 use super::components::Player;
-use crate::enemy::components::Enemy;
-use crate::enemy::ENEMY_SIZE;
 use crate::events::GameOver;
-use crate::score::resources::Score;
-use crate::star::components::Star;
-use crate::star::STAR_SIZE;
+use crate::game::enemy::components::Enemy;
+use crate::game::enemy::ENEMY_SIZE;
+use crate::game::score::resources::Score;
+use crate::game::star::components::Star;
+use crate::game::star::STAR_SIZE;
 
 pub fn spawn_player(
     mut commands: Commands,
@@ -140,5 +140,11 @@ pub fn confine_player_movement(
             translation.y = y_max;
         }
         player_transform.translation = translation;
+    }
+}
+
+pub fn despawn_player(mut commands: Commands, player_query: Query<Entity, With<Player>>) {
+    if let Ok(player_entity) = player_query.get_single() {
+        commands.entity(player_entity).despawn();
     }
 }
